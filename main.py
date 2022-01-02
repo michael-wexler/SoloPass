@@ -1,17 +1,17 @@
 import os
-print("Welcome to SoloPass: A Password Management Tool")
 filesize = os.path.getsize("password.txt")
-if filesize == 0:
-  masterpassword = input("What is your master password?")
-  file = open("password.txt","a")
-  file.write(masterpassword)
-  file.close()
-else:
-  file = open("password.txt", "r")
-  masterpassword = file.readline().strip()
-  file.close()
+print("Welcome to SoloPass: A Password Management Tool")
 while True:
   passwordattempt = input("Enter Master Password: ")
+  if filesize == 0:
+      masterpassword = input("What is your master password?")
+      file = open("password.txt", "a")
+      file.write(masterpassword)
+      file.close()
+  else:
+      file = open("password.txt", "r")
+      masterpassword = file.readline().strip()
+      file.close()
   if passwordattempt == masterpassword:
     check = True
     while check:
