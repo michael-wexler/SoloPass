@@ -1,5 +1,3 @@
-import os
-filesize = os.path.getsize("password.txt")
 print("Welcome to SoloPass: A Password Management Tool")
 def view():
     file = open("database.txt", "r")
@@ -36,7 +34,7 @@ def add():
         for line in data:
             file.write(line)
         file.write("\n")
-    file.write(final_data)
+    file.write(str(final_data))
     file.close()
     print("Password has been added!")
 def delete():
@@ -76,7 +74,10 @@ def update():
     file.close()
     print("Master password has been updated!")
 while True:
-    if filesize == 0:
+    file = open("password.txt", "r")
+    data = file.readlines()
+    file.close()
+    if len(data) == 0:
         masterpassword = input("What is your master password?")
         file = open("password.txt", "a")
         file.write(masterpassword)
