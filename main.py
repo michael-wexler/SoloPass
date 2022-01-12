@@ -1,3 +1,6 @@
+from cryptography.fernet import Fernet
+key = Fernet.generate_key()
+f = Fernet(key)
 print("Welcome to SoloPass: A Password Management Tool")
 def view():
     file = open("database.txt", "r")
@@ -86,8 +89,26 @@ while True:
         file = open("password.txt", "r")
         masterpassword = file.readline().strip()
         file.close()
+        file = open("database.txt", "r")
+        data = file.readlines()
+        file.close()
+        file = open("database.txt", "w")
+        datalist = []
+        for line in data:
+            token = f.encrypt(bytes(str(line), 'utf-8'))
+            datalist.append(token)
+            file.write(str(token) + '\n')
+        file.close()
     passwordattempt = input("Enter Master Password: ")
     if passwordattempt == masterpassword:
+        file = open("database.txt", "r")
+        data = file.readlines()
+        file.close()
+        file = open("database.txt", "w")
+        for line in datalist:
+            d = f.decrypt(line)
+            file.write(d.decode())
+        file.close()
         check = True
         while check:
             print("1. View Passwords")
@@ -106,5 +127,7 @@ while True:
                 update()
             elif option == "5":
                 break
+        continue
+
     else:
         print("Incorrect Password. Try again.")
